@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="jumbotron-heading">Task Manager System</h1>
+    <h2 class="lead text-muted">When the team is control, results follow</h2>
+    <ul>
+      <li>Counts of your colleagues: {{ num_users }}</li>
+      <li>Count of Actual Tasks: {{ num_tasks }}</li>
+      <li>Tasks completed: {{ num_is_done }}</li>
+    </ul>
+  </div>
+{% endblock %}
