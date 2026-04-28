@@ -2,8 +2,8 @@
   {% if user.is_authenticated %}
     <li class="list-group-item">
       <div class="d-flex align-items-center">
-      User:
-      <a href="#" class="ml-2">{{ user.get_username }}</a>
+        User:
+        <a href="#" class="ml-2">{{ user.get_username }}</a>
         <form method="post"
               action="{% url 'accounts:logout' %}"
               class="ml-auto">
@@ -14,16 +14,13 @@
         </form>
       </div>
     </li>
-
-
-
   {% else %}
     <li class="list-group-item"><a href="#">Login</a></li>
   {% endif %}
   <br>
 
-  <li class="list-group-item"><a href="#">Home</a></li>
-  <li class="list-group-item"><a href="#">All drivers</a></li>
-  <li class="list-group-item"><a href="#">All cars</a></li>
-  <li class="list-group-item"><a href="#">All manufacturers</a></li>
+  <li class="list-group-item"><a href="{% url "core:index" %}">Home</a></li>
+  <li class="list-group-item"><a href="{% url 'tasks:task-list' %}">Tasks</a></li>
+  <li class="list-group-item"><a href="#">Colleagues</a></li>
+  <li class="list-group-item"><a href="#">My Tasks</a></li>
 </ul>

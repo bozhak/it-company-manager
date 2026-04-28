@@ -1,7 +1,7 @@
 from django.urls import path
 from core.views import home_view
 urlpatterns = [
-    path("", home_view)
+    path("", home_view, name="index")
 ]
 
 app_name = "core"

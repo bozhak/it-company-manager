@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h2>Tasks</h2>
+
+  <form method="get" class="form-inline mb-3">
+    <input type="text" name="q" class="form-control mr-2" placeholder="Search...">
+
+    <select name="priority" class="form-control mr-2">
+      <option value="">All priorities</option>
+      <option value="URGENT">Urgent</option>
+      <option value="HIGH">High</option>
+      <option value="MEDIUM">Medium</option>
+      <option value="LOW">Low</option>
+    </select>
+
+    <button class="btn btn-primary">Filter</button>
+  </form>
+
+  <table class="table table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th>Name</th>
+        <th>Priority</th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Assignees</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for task in task_list %}
+      <tr>
+        <td>
+          <a href="{% url 'tasks:task-detail' task.id %}">
+            {{ task.name }}
+          </a>
+        </td>
+
+        <td>{{ task.get_priority_display }}</td>
+
+        <td>{{ task.deadline }}</td>
+
+        <td>
+          {% if task.is_completed %}
+            <span class="badge badge-success">Done</span>
+          {% else %}
+            <span class="badge badge-warning">In progress</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {{ task.assignees.all|join:", " }}
+        </td>
+
+        <td>
+          <a href="#"
+             class="btn btn-sm btn-info">Edit</a>
+
+          <a href="#"
+             class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No tasks found</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Task Detail<a style="float: right" href="">Edit</a></h1>
+  <p><strong>Name: </strong>{{ task.name }}</p>
+  <p><strong>Price: </strong>{{ task.description }}</p>
+  <p><strong>Format: </strong>{{ taks.format  }}</p>
+  <div class="ml-3">
+    <h3>Authors:</h3>
+    {% for author in book.authors.all %}
+      <hr>
+      <p class="text-muted">{{ author.id }}</p>
+      <p>{{ author.first_name }} {{ author.last_name }}
+      {% if author.pseudo %}
+        {{ author.pseudo }}
+      {% endif %}
+      </p>
+    {% empty %}
+      <p>No authors!</p>
+    {% endfor %}
+  </div>
+{% endblock %}

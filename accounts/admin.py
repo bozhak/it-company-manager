@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import Worker, Position
+from accounts.models import Worker, Position, Command
 
 
 @admin.register(Worker)
@@ -11,4 +11,6 @@ class WorkerAdmin(UserAdmin):
 
 
 admin.site.register(Position)
+admin.site.register(Command)
+
 

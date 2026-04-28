@@ -1,49 +1,73 @@
 from django.db import models
-from django.db.models import ForeignKey, ManyToManyField
-from django.db.models.fields import CharField
 from django.conf import settings
 
 
+class Project(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    start_date = models.DateField(auto_now_add=True)
+
+
 class TaskType(models.Model):
-    name = CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
 class Task(models.Model):
-    class Priority(models.TextChoices):
-        URGENT = "URGENT", "Urgent"
-        HIGH = "HIGH", "High"
-        MEDIUM = "MEDIUM", "Medium"
-        LOW = "LOW", "Low"
+    class Status(models.TextChoices):
+        TODO = "todo", "To do"
+        IN_PROGRESS = "in_progress", "In progress"
+        DONE = "done", "Done"
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    deadline = models.DateTimeField()
-    is_completed = models.BooleanField(default=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
 
-    priority = models.CharField(
-        max_length=10,
-        choices=Priority,
-        default=Priority.MEDIUM
+    status = models.CharField(
+        max_length=20,
+        choices=Status,
+        default=Status.TODO
     )
 
-    task_type = ForeignKey(
+    execution_status = models.IntegerField(default=0)
+
+    github_link = models.CharField(max_length=255, null=True, blank=True)
+    solution_link = models.CharField(max_length=255, null=True, blank=True)
+
+    deadline = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    task_type = models.ForeignKey(
         TaskType,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+    )
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+    )
+
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="tasks"
     )
 
-    assignees = ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="tasks"
+
+class Archive(models.Model):
+    project = models.ManyToManyField(
+        Project,
+        related_name="archives",
     )
 
-    def __str__(self):
-        return (
-            f"{self.name} {self.description} "
-            f"{self.is_completed} {self.deadline} "
-            f"{self.priority} {self.task_type} "
-            f"{self.assignees}"
-        )
+    worker = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="archives"
+    )
+
+    archived_at = models.DateTimeField(auto_now_add=True)
+
